@@ -28,9 +28,25 @@ echo "Other agent tools that read an .agents/ convention:"
 link_or_copy skills .agents/skills
 
 echo
-echo "Instruction files already in place:"
-for f in AGENTS.md CLAUDE.md GEMINI.md; do [[ -f "$f" ]] && echo "  $f"; done
+if [[ -n "${HERMES_HOME:-}" ]]; then
+  echo "Hermes profile skills (HERMES_HOME=$HERMES_HOME):"
+  mkdir -p "$HERMES_HOME/skills"
+  shopt -s nullglob
+  for src in skills/*/; do
+    name="$(basename "$src")"
+    [[ "$name" == _template ]] && continue
+    link_or_copy "$src" "$HERMES_HOME/skills/$name"
+  done
+  shopt -u nullglob
+else
+  echo "Hermes: set HERMES_HOME to a profile directory (e.g. ~/.hermes/profiles/family-chief) and re-run to link skills."
+fi
 
 echo
-echo "Done. Cursor, Codex, and Copilot read AGENTS.md directly."
+echo "Instruction files already in place:"
+for f in AGENTS.md CLAUDE.md GEMINI.md HERMES.md; do [[ -f "$f" ]] && echo "  $f"; done
+
+echo
+echo "Done. Cursor, Codex, Copilot, and Hermes read AGENTS.md from this folder."
 echo "Gemini CLI: set its context file name to AGENTS.md, or keep GEMINI.md."
+echo "Hermes: see HERMES.md and docs/hermes-implementation-guide.md."

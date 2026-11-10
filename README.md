@@ -2,7 +2,7 @@
 
 **An operating system for running a household with AI agents. It's built from plain files, works with any tool, and is designed to be safe.**
 
-Family OS is a folder of Markdown files that gives an AI assistant what it needs to help a family run day-to-day logistics: calendars, school emails, meals, bills, home upkeep and family rituals. The rulebook is one file, [`AGENTS.md`](AGENTS.md). Tool-specific files such as `CLAUDE.md` and `GEMINI.md` just point back to it. Your family's decisions live in `context/`, repeatable routines live in `skills/`, and the safety rules live in `harness/`.
+Family OS is a folder of Markdown files that gives an AI assistant what it needs to help a family run day-to-day logistics: calendars, school emails, meals, bills, home upkeep and family rituals. The rulebook is one file, [`AGENTS.md`](AGENTS.md). Tool-specific files such as `CLAUDE.md`, `GEMINI.md`, and `HERMES.md` just point back to it. Your family's decisions live in `context/`, repeatable routines live in `skills/`, and the safety rules live in `harness/`.
 
 The idea: **context beats prompting, and workflows beat chat.** The assistant prepares, reminds, drafts and checks. The adults decide.
 
@@ -12,7 +12,7 @@ The idea: **context beats prompting, and workflows beat chat.** The assistant pr
 
 - Parents and caregivers who want an AI assistant to carry some of the mental load without handing it the keys.
 - Households with one adult, two adults, or kids split across two homes. The member templates in `context/members/` can be adapted to each.
-- Beginners (Grok Bot and consumer-assistant paths need no terminal) and tinkerers (Claude Code, Codex, Cursor and similar tools can open the folder directly).
+- Beginners (Grok Bot and consumer-assistant paths need no terminal) and tinkerers (Hermes, Claude Code, Codex, Cursor and similar tools can open the folder directly).
 
 ## Quick start
 
@@ -27,21 +27,23 @@ The idea: **context beats prompting, and workflows beat chat.** The assistant pr
    - **Other consumer assistants, including ChatGPT projects:** [`consumer/README.md`](consumer/README.md) and [`docs/02-tool-matrix.md`](docs/02-tool-matrix.md). Paste a constitution from `consumer/shared/` (1,500 or 4,000 characters) into the custom instructions slot, and use the Doc and Sheet "state bridge" in `consumer/shared/state-bridge.md` in place of folder access.
 3. Before you connect email, calendar or money, run the probes in [`consumer/probes.md`](consumer/probes.md). If the injection test fails, don't connect.
 
-### Path B: Tools that can open a folder (Claude desktop or Claude Code, Codex, Cursor and similar)
+### Path B: Tools that can open a folder (Hermes, Claude desktop or Claude Code, Codex, Cursor and similar)
 
 1. Open the folder in your tool.
 2. Say: **"Follow AGENTS.md and run the setup skill."** Answer the first round of questions.
 3. Next morning, say **"Run the morning brief."** On Sunday, say **"Run the weekly summit."**
 4. End each session with **"Run handoff"** so any tool can pick up where you left off.
 
-Optional for Claude: `bash scripts/link-tools.sh` (add `--copy` on a synced drive) makes the skills discoverable under `.claude/`. For Gemini, `GEMINI.md` points the CLI to `AGENTS.md`.
+- **Hermes (Desktop or CLI):** [`docs/hermes-implementation-guide.md`](docs/hermes-implementation-guide.md). Use a dedicated Family Chief profile. `bash scripts/link-tools.sh` with `HERMES_HOME` set links `skills/` into that profile. `HERMES.md` points at `AGENTS.md`.
+- **Claude:** `bash scripts/link-tools.sh` (add `--copy` on a synced drive) makes the skills discoverable under `.claude/`.
+- **Gemini CLI:** `GEMINI.md` points at `AGENTS.md`.
 
 ## Repo layout
 
 | Path | What's in it |
 |---|---|
 | `AGENTS.md` | The rulebook. It's the one source of truth for every tool. |
-| `CLAUDE.md`, `GEMINI.md` | Thin pointers to `AGENTS.md`, plus tool tips |
+| `CLAUDE.md`, `GEMINI.md`, `HERMES.md` | Thin pointers to `AGENTS.md`, plus tool tips |
 | `context/` | What the family decided. `INDEX.md` is the router. There are files for household, charter, routines, calendar rules, food, home, money rules, contacts, voice and a vault pointer. |
 | `context/members/` | Templates for adults and children, plus an example of a private lane |
 | `context/decisions/` | Decision log |
@@ -52,7 +54,7 @@ Optional for Claude: `bash scripts/link-tools.sh` (add `--copy` on a synced driv
 | `harness/evals/` | Golden tests, with safety tests first |
 | `consumer/` | Adapters for consumer assistants (Gemini, Grok and Grok Bot, Muse), shared constitutions, injection shield, state bridge and probes |
 | `kid-mode/` | A separate, narrower agent for children (`KID-AGENT.md`) |
-| `docs/` | Architecture and rollout, tool matrix, skill-writing guide, Grok Bot implementation guide and the kids module spec (draft) |
+| `docs/` | Architecture and rollout, tool matrix, skill-writing guide, Grok Bot and Hermes implementation guides, and the kids module spec (draft) |
 | `scripts/` | `link-tools.sh`, `compile-consumer.sh` (builds tier-filtered bundles into `dist/`), `check-staleness.sh`, plus maintainer tools `check-public-safe.sh`, `lint-repo.sh`, `install-hooks.sh` |
 
 `outputs/`, `dist/` and `context/members/*/private/` are git-ignored on purpose.
