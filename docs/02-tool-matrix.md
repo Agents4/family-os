@@ -17,7 +17,7 @@ If a tool can't write to the folder, use it as a *planner*: upload `AGENTS.md`, 
 
 | Need | Strong fit | Why / caveat |
 |---|---|---|
-| Full harness: skills, sub-agents, hooks, scheduled runs, connectors, file edits | **Claude Code**, or **Claude desktop app with a connected folder** | Reads `CLAUDE.md` (which imports `AGENTS.md`), native skills and sub-agents, MCP connectors, scheduled tasks, plan mode. The desktop app lets a non-technical adult run "weekly summit" with no terminal. |
+| Full harness: skills, sub-agents, hooks, scheduled runs, connectors, file edits | **Hermes Agent** (Desktop or CLI), **Claude Code**, or **Claude desktop** with a connected folder | Hermes reads `AGENTS.md` / `HERMES.md`, loads `skills/` into a profile, cron, Google Workspace, persistent memory (cache only). Claude reads `CLAUDE.md`, native skills and sub-agents, MCP, scheduled tasks. Desktop apps let a non-technical adult run "weekly summit" with no terminal. See `docs/hermes-implementation-guide.md`. |
 | Another adult who prefers a chat app | **Whatever they already use** (Claude, ChatGPT, Gemini) with a Project or Gem that holds `AGENTS.md` + `context/` files | Adoption beats purity. Give them the same `AGENTS.md`; they paste outputs into `outputs/` or a shared note the agent ingests. |
 | Agent-style coding tools for maintaining the OS (editing skills, scripts, evals) | **Codex CLI, Cursor, Copilot agents, Gemini CLI** | These read `AGENTS.md` natively (or via a setting). Good for the "OS admin" role, less so for daily family use. |
 | Calendar/email/Docs-native work in a Google household | **Gemini in Workspace** | Deepest access to Calendar, Gmail, Drive, Keep, Docs; Android and Google Home reach. Check what it can write vs. only read. |
@@ -42,6 +42,7 @@ These can't open a folder, so they run on compiled bundles instead of the raw fi
 
 ## Per-tool setup (5 minutes each)
 
+- **Hermes Desktop / CLI:** dedicated Family Chief profile. Open the folder as the project. `HERMES_HOME=... bash scripts/link-tools.sh`. Guide: `docs/hermes-implementation-guide.md`.
 - **Claude Code / Claude desktop:** open the folder. Run `scripts/link-tools.sh` once to create `.claude/skills` and `.claude/agents`. Say "run setup."
 - **ChatGPT / Gemini (project-style):** upload `AGENTS.md`, `context/INDEX.md`, `context/household.md`, and the skills you use. Paste: "Follow AGENTS.md. Read INDEX.md first." Re-upload after context changes (or connect Drive).
 - **Codex / Cursor / Gemini CLI:** open the folder; `AGENTS.md` is picked up automatically (Gemini CLI: set the context file name to `AGENTS.md`).
